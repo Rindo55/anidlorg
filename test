@@ -1,0 +1,40 @@
+import requests
+
+# Define the URL of your WordPress site and the post ID you want to edit
+wordpress_url = 'https://anidl.org/wp-json/wp/v2/posts/'
+post_id = 195300 # Replace 1 with the ID of the post you want to edit
+
+# Set your WordPress username and password
+username = 'pirateuserx@gmail.com'
+password = 'tDLORU24rKBW)7A0AE%hwHoq'
+
+# Set the new content for the post
+new_content = {
+    'title': 'test',  # Replace with your new title
+    'content': 'Updated content here.',  # Replace with your new content
+}
+
+# Authenticate using basic authentication
+auth_response = requests.post(
+    wordpress_url,
+    auth=(username, password),
+)
+auth_response.raise_for_status()
+
+# Get the current post content
+post_response = requests.get(
+    wordpress_url + str(post_id),
+    auth=(username, password),
+)
+post_response.raise_for_status()
+current_content = post_response.json()
+
+# Update the post with new content
+update_response = requests.post(
+    wordpress_url + str(post_id),
+    auth=(username, password),
+    json=new_content
+)
+update_response.raise_for_status()
+
+print('Post updated successfully!')
